@@ -1,9 +1,7 @@
 <?php
-
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-
 class CreateUsuariosTable extends Migration
 {
     /**
@@ -20,7 +18,6 @@ class CreateUsuariosTable extends Migration
             $table->string('senha', 50);
         });
     }
-
     /**
      * Reverse the migrations.
      *

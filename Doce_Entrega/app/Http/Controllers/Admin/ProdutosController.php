@@ -16,8 +16,8 @@ class ProdutosController extends Controller
      */
     public function index()
     {
-        $produtos = Produto::all();
 
+        $produtos = Produto::all();
         return view('admin.produtos_list', compact('produtos'));
     }
 
@@ -28,11 +28,8 @@ class ProdutosController extends Controller
      */
     public function create()
     {
-
         $usuarios = Usuario::orderBy('nome')->get();
-
         $acao = 1;
-
         return view('admin.produtos_form', compact('usuarios', 'acao'));
     }
 
@@ -50,16 +47,13 @@ class ProdutosController extends Controller
             'preco' => 'required',
             'descricao' => 'required|min:5|max:100'
         ]);
-
         // recupera todos os campos do formulário
         $produtos = $request->all();
-
         // insere os dados na tabela
         $prod = Produto::create($produtos);
-
         if ($prod) {
             return redirect()->route('produtos.index')
-                            ->with('Produto Incluído!');
+                ->with('Produto Incluído!');
         }
     }
 
@@ -82,16 +76,20 @@ class ProdutosController extends Controller
      */
     public function edit($id)
     {
-         $reg = Produto::find($id);
-
+        $reg = Produto::find($id);
         $usuarios = Usuario::orderBy('nome')->get();
+        $acao = 2;
 
-         $acao = 2;
-         
-         return view('admin.produtos_form', compact('reg', 'usuarios', 'acao'));
+        return view('admin.produtos_form', compact('reg', 'usuarios', 'acao'));
     }
-    
-    
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function update(Request $request, $id)
     {
         $this->validate($request, [
@@ -100,25 +98,28 @@ class ProdutosController extends Controller
             'preco' => 'required',
             'descricao' => 'required|max:100'
         ]);
-        
+
         $reg = Produto::find($id);
-
         $dados = $request->all();
-
         $alt = $reg->update($dados);
-
         if ($alt) {
             return redirect()->route('produtos.index')
-                            ->with('Produto Alterado!');
+                ->with('Produto Alterado!');
         }
     }
 
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function destroy($id)
     {
         $produtos = Produto::find($id);
         if ($produtos->delete()){
             return redirect() ->route('produtos.index')
-                    ->with('Excluído com Sucesso');
+                ->with('Excluído com Sucesso');
         }
     }
 }

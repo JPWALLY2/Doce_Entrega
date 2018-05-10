@@ -16,7 +16,6 @@ class UsuariosController extends Controller
     public function index()
     {
         $usuario = Usuario::all();
-
         return view('admin.usuarios_list', ['usuarios' => $usuario]);
     }
 
@@ -86,7 +85,7 @@ class UsuariosController extends Controller
         $usuarios = Usuario::find($id);
         if ($usuarios->delete()){
             return redirect() ->route('usuarios.index')
-                    ->with('Excluído com Sucesso');
+                ->with('Excluído com Sucesso');
         }
     }
 }

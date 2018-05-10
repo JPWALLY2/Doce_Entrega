@@ -1,4 +1,4 @@
-@extends('adminlte::page')
+﻿@extends('adminlte::page')
 
 @section('title', 'Cadastro de Produtos')
 
@@ -34,23 +34,9 @@
         <td> {{$p->nome}} </td>
         <td> {{number_format($p->preco, 2, ',', '.')}} </td>
         <td> {{$p->descricao}} </td>
-        <td> {{$p->usuarios_id}} </td>
-        <td> <a href='{{route('produtos.edit', '$produtos->id')}}'
-                        class='btn btn-info'
-                        role='button'> Alterar </a>
-                     <form style="display: inline-block"
-                           method="post"
-                           action="{{route('produtos.destroy', $p->id)}}"
-                           onsubmit="return confirm('Confirma Exclusão?')">
-                           {{ method_field('delete') }}
-                           {{ csrf_field() }}
-                           <button type="submit"
-                                   class="btn btn-danger"> Excluir </button>
+        <td> {{$p->usuarios->nome}} </td>
 
-                     </form>
-
-                </td>
-          <td> <a href='#'
+          <td> <a href="{{route('produtos.edit', $p->id)}}"
                   class='btn btn-info'
                   role='button'> Alterar </a>
               <form style="display: inline-block"

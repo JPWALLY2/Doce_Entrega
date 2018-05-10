@@ -6,10 +6,6 @@
 <div class='col-lg-11'>
     <h2> Lista de Usuários </h2>
 </div>
-<div class='col-sm-1'>
-    <a href='#' class='btn btn-primary'
-    role='button'> Novo </a>
-</div>
 
     <table class="table table-hover " >
         <thead>
@@ -26,8 +22,8 @@
                 <td> {{$u->email}} </td>
                 
               
-                <td> <a href='#'
-                        class='btn btn-info' 
+                <td> <a href="{{route('usuarios.edit', $u->id)}}"
+                        class='btn btn-info'
                         role='button'> Alterar </a>
                      <form style="display: inline-block"
                            method="post"
@@ -42,6 +38,7 @@
                 </td>
               
             </tr>
+
             @endforeach
         </tbody>
     </table>

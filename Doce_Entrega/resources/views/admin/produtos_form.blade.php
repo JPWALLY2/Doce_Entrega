@@ -1,4 +1,4 @@
-@extends('adminlte::page')
+﻿@extends('adminlte::page')
 
 @section('title', 'Cadastro de Produtos')
 
@@ -60,7 +60,7 @@
             <label for="cor">Nome:</label>
             <input type="text" class="form-control" id="nome" 
                    name="nome" 
-                   value="{{$reg->cor or old('cor')}}"
+                   value="{{$reg->nome or old('nome')}}"
                    required>
         </div>
 
@@ -81,10 +81,10 @@
                    required>
         </div>
           <div class="form-group">
-              <label for="idUsuarios">Cadastrado por:</label>
-              <select id="idUsuarios" name="idUsuarios" class="form-control">
+              <label for="usuarios_id">Cadastrado por:</label>
+              <select id="usuarios_id" name="usuarios_id" class="form-control">
                   @foreach($usuarios as $u) {
-                  <option value="{{$u->id}}" {{ isset($reg) and $reg->usuarios_id == $m->id or old('usuarios_id') == $u->id ? "selected" : "" }}>{{$u->nome}}</option>
+                  <option value="{{$u->id}}" {{ isset($reg) and $reg->usuarios_id == $u->id or old('usuarios_id') == $u->id ? "selected" : "" }}>{{$u->nome}}</option>
                   @endforeach
                   }
               </select>
