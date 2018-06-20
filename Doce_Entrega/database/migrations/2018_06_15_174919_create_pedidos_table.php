@@ -15,14 +15,12 @@ class CreatePedidosTable extends Migration
     {
         Schema::create('pedidos', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('quantidade');
-            $table->decimal('preco_total', 10, 2);
-            $table->integer('produtos_id')->references('id')->on('produtos');
-            $table->integer('clientes_id')->references('id')->on('clientes');
-            $table->integer('enderecos_id')->references('id')->on('enderecos');
-
-
-
+            $table->smallInteger('quant');
+            $table->decimal('preco', 10, 2);
+            $table->integer('produto_id')->unsigned();
+            $table->integer('cliente_id')->unsigned();
+            $table->integer('endereco_id')->unsigned();
+            $table->timestamps();
         });
     }
 

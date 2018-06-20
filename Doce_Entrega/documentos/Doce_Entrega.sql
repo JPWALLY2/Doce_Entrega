@@ -15,14 +15,14 @@ CREATE SCHEMA IF NOT EXISTS `doce_entrega` DEFAULT CHARACTER SET utf8 ;
 USE `doce_entrega` ;
 
 -- -----------------------------------------------------
--- Table `doce_entrega`.`usuarios`
+-- Table `doce_entrega`.`administradores`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `doce_entrega`.`usuarios` (
-  `idUsuarios` INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `doce_entrega`.`administradores` (
+  `idAdmin` INT NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(15) NOT NULL,
   `email` VARCHAR(50) NOT NULL,
   `senha` VARCHAR(50) NOT NULL,
-  PRIMARY KEY (`idUsuarios`))
+  PRIMARY KEY (`idAdmin`))
 ENGINE = InnoDB;
 
 
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `doce_entrega`.`produtos` (
   INDEX `fk_produto_usuarios1_idx` (`usuarios_id` ASC),
   CONSTRAINT `fk_produto_usuarios1`
     FOREIGN KEY (`usuarios_id`)
-    REFERENCES `doce_entrega`.`usuarios` (`idUsuarios`)
+    REFERENCES `doce_entrega`.`administradores` (`idAdmin`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -81,19 +81,6 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `doce_entrega`.`clientes`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `doce_entrega`.`clientes` (
-  `idClientes` INT NOT NULL,
-  `nome` VARCHAR(15) NOT NULL,
-  `email` VARCHAR(50) NOT NULL,
-  `senha` VARCHAR(50) NOT NULL,
-  `telefone` INT NOT NULL,
-  PRIMARY KEY (`idClientes`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `doce_entrega`.`enderecos`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `doce_entrega`.`enderecos` (
@@ -107,12 +94,32 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `doce_entrega`.`clientes`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `doce_entrega`.`clientes` (
+  `idClientes` INT NOT NULL,
+  `nome` VARCHAR(15) NOT NULL,
+  `email` VARCHAR(50) NOT NULL,
+  `senha` VARCHAR(50) NOT NULL,
+  `telefone` INT NOT NULL,
+  `enderecos_id` INT NOT NULL,
+  PRIMARY KEY (`idClientes`),
+  INDEX `fk_clientes_enderecos1_idx` (`enderecos_id` ASC),
+  CONSTRAINT `fk_clientes_enderecos1`
+    FOREIGN KEY (`enderecos_id`)
+    REFERENCES `doce_entrega`.`enderecos` (`idEnderecos`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `doce_entrega`.`pedidos`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `doce_entrega`.`pedidos` (
   `idPedidos` INT NOT NULL AUTO_INCREMENT,
   `quantidade` INT NOT NULL,
-  `preco_total` DOUBLE NOT NULL,
+  `preco` DOUBLE NOT NULL,
   `produtos_id` INT NOT NULL,
   `clientes_id` INT NOT NULL,
   `enderecos_id` INT NOT NULL,
@@ -133,6 +140,70 @@ CREATE TABLE IF NOT EXISTS `doce_entrega`.`pedidos` (
   CONSTRAINT `fk_pedido_endereco1`
     FOREIGN KEY (`enderecos_id`)
     REFERENCES `doce_entrega`.`enderecos` (`idEnderecos`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `doce_entrega`.`pagamentos`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `doce_entrega`.`pagamentos` (
+  `idPagamento` INT NOT NULL,
+  `preco` VARCHAR(45) NOT NULL,
+  `desconto` VARCHAR(45) NULL,
+  `pedidos_id` INT NOT NULL,
+  PRIMARY KEY (`idPagamento`),
+  INDEX `fk_pagamento_pedidos1_idx` (`pedidos_id` ASC),
+  CONSTRAINT `fk_pagamento_pedidos1`
+    FOREIGN KEY (`pedidos_id`)
+    REFERENCES `doce_entrega`.`pedidos` (`idPedidos`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `doce_entrega`.`fornecedores`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `doce_entrega`.`fornecedores` (
+  `idFornecedores` INT NOT NULL,
+  `nome` VARCHAR(45) NOT NULL,
+  `email` VARCHAR(45) NOT NULL,
+  `senha` VARCHAR(45) NOT NULL,
+  `cnpj` VARCHAR(45) NOT NULL,
+  `telefone` VARCHAR(45) NOT NULL,
+  `celular` VARCHAR(45) NULL,
+  `produtos_id` INT NOT NULL,
+  `enderecos_id` INT NOT NULL,
+  PRIMARY KEY (`idFornecedores`),
+  INDEX `fk_fornecedores_produtos1_idx` (`produtos_id` ASC),
+  INDEX `fk_fornecedores_enderecos1_idx` (`enderecos_id` ASC),
+  CONSTRAINT `fk_fornecedores_produtos1`
+    FOREIGN KEY (`produtos_id`)
+    REFERENCES `doce_entrega`.`produtos` (`idProdutos`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_fornecedores_enderecos1`
+    FOREIGN KEY (`enderecos_id`)
+    REFERENCES `doce_entrega`.`enderecos` (`idEnderecos`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `doce_entrega`.`localizacoes`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `doce_entrega`.`localizacoes` (
+  `idLocalizacoes` INT NOT NULL,
+  `cidade` VARCHAR(45) NOT NULL,
+  `pedidos_id` INT NOT NULL,
+  PRIMARY KEY (`idLocalizacoes`),
+  INDEX `fk_acompanhamentos_pedidos1_idx` (`pedidos_id` ASC),
+  CONSTRAINT `fk_acompanhamentos_pedidos1`
+    FOREIGN KEY (`pedidos_id`)
+    REFERENCES `doce_entrega`.`pedidos` (`idPedidos`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

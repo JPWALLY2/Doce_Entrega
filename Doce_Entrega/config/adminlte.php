@@ -58,7 +58,7 @@ return [
     |
     */
 
-    'layout' => 'boxed',
+    'layout' => 'fixed',
 
     /*
     |--------------------------------------------------------------------------
@@ -117,7 +117,7 @@ return [
                 [
                     'text' => 'Produtos',
                     'icon'    => 'product-hunt',
-                    'url'  => 'produtos',
+                    'url'  => 'admin/produtos',
                 ],
                
 //                [

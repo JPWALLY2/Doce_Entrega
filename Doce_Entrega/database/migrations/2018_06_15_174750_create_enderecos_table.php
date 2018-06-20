@@ -1,8 +1,10 @@
 <?php
+
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-class CreateUsuariosTable extends Migration
+
+class CreateEnderecosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -11,13 +13,16 @@ class CreateUsuariosTable extends Migration
      */
     public function up()
     {
-        Schema::create('usuarios', function (Blueprint $table) {
+        Schema::create('enderecos', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nome', 15);
-            $table->string('email', 50);
-            $table->string('senha', 50);
+            $table->string('bairro');
+            $table->string('rua');
+            $table->smallInteger('num');
+            $table->string('adicional');
+            $table->timestamps();
         });
     }
+
     /**
      * Reverse the migrations.
      *
@@ -25,6 +30,6 @@ class CreateUsuariosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('usuarios');
+        Schema::dropIfExists('enderecos');
     }
 }

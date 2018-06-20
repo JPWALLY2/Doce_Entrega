@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Produto;
-use App\Usuario;
+use App\User;
 
-class ProdutosController extends Controller
+class ProdutoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,8 +17,9 @@ class ProdutosController extends Controller
     public function index()
     {
 
-        $produtos = Produto::all();
-        return view('admin.produtos_list', compact('produtos'));
+        $produtos = Produto::paginate(7);
+        $numProd = Produto::count('id');
+        return view('admin.produtos_list', compact('produtos', 'numProd'));
     }
 
     /**
@@ -28,9 +29,9 @@ class ProdutosController extends Controller
      */
     public function create()
     {
-        $usuarios = Usuario::orderBy('nome')->get();
+        $user = User::orderBy('nome')->get();
         $acao = 1;
-        return view('admin.produtos_form', compact('usuarios', 'acao'));
+        return view('admin.produtos_form', compact('user', 'acao'));
     }
 
     /**
@@ -42,18 +43,28 @@ class ProdutosController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'tipo' => 'required|min:4|max:20',
             'nome' => 'required|min:4|max:20',
-            'preco' => 'required',
+            'tipo' => 'required|min:4|max:20',
             'descricao' => 'required|min:5|max:100'
         ]);
         // recupera todos os campos do formulário
         $produtos = $request->all();
+        
+        // se campo foto foi preenchido e enviado (válido)
+        if ($request->hasFile('foto') && 
+            $request->file('foto')->isValid()) {
+                // salva o arquivo e retorna um id único
+                $path = $request->file('foto')->store('fotos');
+
+                $produtos['foto'] = $path;
+            }    
+
+        
         // insere os dados na tabela
         $prod = Produto::create($produtos);
         if ($prod) {
             return redirect()->route('produtos.index')
-                ->with('Produto Incluído!');
+                 ->with('status', $request->nome . ' inserido com sucesso!');
         }
     }
 
@@ -77,10 +88,11 @@ class ProdutosController extends Controller
     public function edit($id)
     {
         $reg = Produto::find($id);
-        $usuarios = Usuario::orderBy('nome')->get();
+        $user = User::orderBy('nome')->get();
+        $tip = Produto::tipos();
         $acao = 2;
 
-        return view('admin.produtos_form', compact('reg', 'usuarios', 'acao'));
+        return view('admin.produtos_form', compact('reg', 'user', 'acao', 'tip'));
     }
 
     /**
@@ -92,20 +104,34 @@ class ProdutosController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
-            'tipo' => 'required|min:4|max:20',
-            'nome' => 'required|min:4|max:20',
-            'preco' => 'required',
-            'descricao' => 'required|max:100'
-        ]);
+        // obtém os dados do form
+        $produtos = $request->all();
 
+        // posiciona no registo a ser alterado
         $reg = Produto::find($id);
-        $dados = $request->all();
-        $alt = $reg->update($dados);
+
+        // se campo foto foi preenchido e enviado (válido)
+        if ($request->hasFile('foto') && 
+            $request->file('foto')->isValid()) {
+                // salva o arquivo e retorna um id único
+                $path = $request->file('foto')->store('fotos');
+
+                $produtos['foto'] = $path;
+    
+                // se existe, exclui a foto antiga
+                if (Storage::exists($reg->foto)) {
+                    Storage::delete($reg->foto);
+                }
+        }
+    
+        // realiza a alteração
+        $alt = $reg->update($produtos);
+
         if ($alt) {
             return redirect()->route('produtos.index')
-                ->with('Produto Alterado!');
+                            ->with('status', $request->nome . ' Alterado!');
         }
+        
     }
 
     /**
@@ -116,10 +142,13 @@ class ProdutosController extends Controller
      */
     public function destroy($id)
     {
-        $produtos = Produto::find($id);
-        if ($produtos->delete()){
-            return redirect() ->route('produtos.index')
-                ->with('Excluído com Sucesso');
+        $prod = Produto::find($id);
+        if ($prod->delete()) {
+            if (Storage::exists($prod->foto)) {
+                Storage::delete($prod->foto);
+            }
+            return redirect()->route('carros.index')
+                            ->with('status', $prod->nome . ' Excluído!');
         }
     }
 }

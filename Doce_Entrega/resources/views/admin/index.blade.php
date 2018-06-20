@@ -3,9 +3,17 @@
 @section('title', 'Doce Entrega')
 
 @section('content_header')
-    <h1>Página Principal</h1>
+    <h1>Bem Vindo !!!</h1>
 @stop
 
 @section('content')
-<!--    <p>Bem-Vindo à Área de Administração do Site Doce Entrega</p>-->
+    <p>Bem vindo ao doce entrega</p>
+@stop
+
+@section('css')
+    <link rel="stylesheet" href="/css/admin_custom.css">
+@stop
+
+@section('js')
+    <script> console.log('Hi!'); </script>
 @stop
