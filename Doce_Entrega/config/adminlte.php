@@ -112,28 +112,31 @@ return [
         'ÁREA DO GERENTE',
         [
             'text'    => 'Cadastros',
-            'icon'    => 'registered',
+            'icon'    => '',
             'submenu' => [
                 [
+                    'text'    => 'Tipos de Produtos',
+                    'icon'    => '',
+                    'url'     => 'admin/tipos',
+                ],
+                [
                     'text' => 'Produtos',
-                    'icon'    => 'product-hunt',
+                    'icon'    => '',
                     'url'  => 'admin/produtos',
+                    
                 ],
                
-//                [
-//                    'text'    => 'Estoques',
-//                    'url'     => '#',
-//                ],
             ],
         ],
         [
             'text'    => 'Gráficos',
-            'icon'    => 'bar-chart',
+            'icon'    => '',
             'submenu' => [
-//                [
-//                    'text' => 'Veículos por Marca',
-//                    'url'  => '#',
-//                ],
+                [
+                    'icon' => '',
+                    'text' => 'Produtos por Tipo',
+                    'url'  => 'admin/produtosgraf',
+                ],
 //                [
 //                    'text'    => 'Marcas por Quantidade',
 //                    'url'     => '#',
@@ -142,12 +145,12 @@ return [
         ],
         [
             'text'    => 'Listagens',
-            'icon'    => 'share',
+            'icon'    => '',
             'submenu' => [
                 [
-                    'text'    => 'Usuarios',
-                    'icon'    => 'users',
-                    'url'     => 'usuarios',
+                    'text'    => 'Produtos de Fornecedores',
+                    'icon'    => '',
+                    'url'     => '#',
                 ],
 
            ],

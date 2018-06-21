@@ -1,10 +1,10 @@
 @extends('adminlte::page')
 
-@section('title', 'Cadastro de Produtos')
+@section('title', 'Cadastro de Tipos de Produtos')
 
 @section('content_header')
     <h1>
-    <a href="{{ route('produtos.create') }}" 
+    <a href="{{ route('tipos.create') }}" 
        class="btn btn-primary pull-right" role="button">Novo</a>
     </h1>
 @endsection
@@ -19,41 +19,19 @@
 
 <table class="table table-striped">
   <tr>
-    <th> Tipo </th>
-    <th> Nome </th>
-    <th> Descrição </th>
-    <th> Preço R$ </th>
-    <th> Cadastrado por: </th>
-    <th> Data </th>
-    <th> Foto </th>    
+    <th> Nome </th>   
     <th> Ações </th>
   </tr>  
-@forelse($produtos as $p)
+@forelse($tipos as $t)
   <tr>
-    <td> {{$p->tipo->nome}} </td>
-    <td> {{$p->nome}} </td>
-    <td> {{$p->descricao}} </td>
-    <td> {{number_format($p->preco, 2, ',', '.')}} </td>
-    <td> {{$p->user->name}} </td>
-    <td> {{date_format($p->created_at, 'd/m/Y')}} </td>
-    <td>
-      @if (Storage::exists($p->foto))
-        <img src="{{url('storage/'.$p->foto)}}"
-             style="width: 80px; height: 50px" 
-             alt="Foto do Produto"> 
-      @else
-        <img src="{{url('storage/fotos/semfoto.jpg')}}"
-             style="width: 80px; height: 50px" 
-             alt="Sem foto"> 
-      @endif
-    </td>  
+    <td> {{$t->nome}} </td>  
     <td> 
-        <a href="{{route('produtos.edit', $p->id)}}" 
+        <a href="{{route('tipos.edit', $t->id)}}" 
             class="btn btn-warning btn-sm" title="Alterar"
             role="button"><i class="fa fa-edit"></i></a> &nbsp;&nbsp;
         <form style="display: inline-block"
               method="post"
-              action="{{route('produtos.destroy', $p->id)}}"
+              action="{{route('tipos.destroy', $t->id)}}"
               onsubmit="return confirm('Confirma Exclusão?')">
                {{method_field('delete')}}
                {{csrf_field()}}
@@ -64,7 +42,7 @@
     </td>
   </tr>
   @if ($loop->iteration == $loop->count)
-    <tr><td colspan=8>Nº de Produtos cadastrados : {{ $numProd}}
+    <tr><td colspan=8>Nº de Tipos de Produtos cadastrados : {{ $numTipo}}
         </td></tr> 
   @endif
 
@@ -74,7 +52,7 @@
 @endforelse
 </table>
 
-{{ $produtos->links() }}
+{{ $tipos->links() }}
 
 @endsection
 

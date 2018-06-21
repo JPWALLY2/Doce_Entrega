@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 use App\Produto;
 use App\User;
+use App\Tipo;
 
 class ProdutoController extends Controller
 {
@@ -29,9 +32,10 @@ class ProdutoController extends Controller
      */
     public function create()
     {
-        $user = User::orderBy('nome')->get();
+        $user = User::orderBy('name')->get();
+        $tipo = Tipo::orderBy('nome')->get();
         $acao = 1;
-        return view('admin.produtos_form', compact('user', 'acao'));
+        return view('admin.produtos_form', compact('user', 'acao', 'tipo'));
     }
 
     /**
@@ -44,7 +48,6 @@ class ProdutoController extends Controller
     {
         $this->validate($request, [
             'nome' => 'required|min:4|max:20',
-            'tipo' => 'required|min:4|max:20',
             'descricao' => 'required|min:5|max:100'
         ]);
         // recupera todos os campos do formulário
@@ -88,11 +91,11 @@ class ProdutoController extends Controller
     public function edit($id)
     {
         $reg = Produto::find($id);
-        $user = User::orderBy('nome')->get();
-        $tip = Produto::tipos();
+        $user = User::orderBy('name')->get();
+        $tipo = Tipo::orderBy('nome')->get();
         $acao = 2;
 
-        return view('admin.produtos_form', compact('reg', 'user', 'acao', 'tip'));
+        return view('admin.produtos_form', compact('reg', 'user', 'acao', 'tipo'));
     }
 
     /**
@@ -142,13 +145,25 @@ class ProdutoController extends Controller
      */
     public function destroy($id)
     {
-        $prod = Produto::find($id);
-        if ($prod->delete()) {
-            if (Storage::exists($prod->foto)) {
-                Storage::delete($prod->foto);
+        $car = Produto::find($id);
+        if ($car->delete()) {
+            if (Storage::exists($car->foto)) {
+                Storage::delete($car->foto);
             }
-            return redirect()->route('carros.index')
-                            ->with('status', $prod->nome . ' Excluído!');
+            return redirect()->route('produtos.index')
+                            ->with('status', $car->nome . ' Excluído!');
         }
+    }
+    
+     public function graf() {
+        $sql = "select t.nome as tipo, count(p.id) as num 
+                from produtos p
+                inner join tipos t
+                on p.tipo_id = t.id
+                group by t.nome";
+
+        $dados = DB::select($sql);                
+
+        return view('admin.produtos_graf', ['dados'=>$dados]);
     }
 }

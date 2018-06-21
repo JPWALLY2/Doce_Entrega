@@ -9,9 +9,12 @@ class Produto extends Model
      public function user() {
         return $this->belongsTo('App\User');
     }
+     public function tipo() {
+        return $this->belongsTo('App\Tipo');
+    }
     
-    protected $fillable = ['tipo', 'nome', 'descricao',
-        'preco', 'user_id', 'foto'];
+    protected $fillable = ['nome', 'descricao',
+        'preco', 'user_id', 'foto', 'tipo_id'];
     
     public function setPrecoAttribute($value) {
         $novo1 = str_replace('.', '', $value);    // retira o ponto
@@ -19,7 +22,4 @@ class Produto extends Model
         $this->attributes['preco'] = $novo2;
     }
     
-    public static function tipos() {
-        return ['Doce', 'Torta', 'Pavê'];
-    }
 }
