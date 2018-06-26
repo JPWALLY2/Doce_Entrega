@@ -15,6 +15,7 @@
 <div class="alert" style="font-size: larger; color: white; background-color: tan">
       {{ session('status') }}
     </div>  
+
 @endif
 
 <table class="table table-striped">
@@ -47,8 +48,7 @@
   @endif
 
 @empty
-  <tr><td colspan=8> Não há produtos cadastrados ou filtro da pesquisa não 
-                     encontrou registros </td></tr>
+  <tr><td colspan=8> Não há tipos de produtos cadastrados </td></tr>
 @endforelse
 </table>
 

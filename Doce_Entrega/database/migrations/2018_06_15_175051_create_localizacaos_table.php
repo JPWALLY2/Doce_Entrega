@@ -17,7 +17,6 @@ class CreateLocalizacaosTable extends Migration
             $table->increments('id');
             $table->string('cidade');
             $table->integer('pedido_id')->unsigned();
-            $table->timestamps();
         });
     }
 

@@ -22,7 +22,8 @@ class ProdutoController extends Controller
 
         $produtos = Produto::paginate(7);
         $numProd = Produto::count('id');
-        return view('admin.produtos_list', compact('produtos', 'numProd'));
+        $acao = 1; 
+        return view('admin.produtos_list', compact('produtos', 'numProd', 'acao'));
     }
 
     /**
@@ -48,7 +49,8 @@ class ProdutoController extends Controller
     {
         $this->validate($request, [
             'nome' => 'required|min:4|max:20',
-            'descricao' => 'required|min:5|max:100'
+            'descricao' => 'required|min:5|max:100',
+            'estoque' => 'required'
         ]);
         // recupera todos os campos do formulário
         $produtos = $request->all();
@@ -166,4 +168,61 @@ class ProdutoController extends Controller
 
         return view('admin.produtos_graf', ['dados'=>$dados]);
     }
+    
+     public function pesq(Request $request) {
+         
+         $acao = 2;
+         $dados = Produto::join('tipos', 'tipos.id', 'produtos.tipo_id')
+                            ->where('produtos.nome', 'like','%'.$request->palavra.'%')
+                            ->orwhere('tipos.nome', 'like','%'.$request->palavra.'%')
+                            ->select('produtos.*')
+                            ->get();
+         
+        return view('admin.produtos_list', compact('acao'), ['produtos' => $dados,
+                         'palavra' => $request->palavra]);
+  
+    }
+    
+    public function wsxml($nome = null) {
+      // indica o tipo de retorno do método
+      header("Content-type: application/xml");
+
+      // inicializa a biblioteca SimpleXML
+      $xml = new \SimpleXMLElement('<?xml version="1.0" encoding="utf-8"?><produtos></produtos>');
+
+      // se não foi passado $nome
+      if ($nome == null) {
+          $item = $xml->addChild("produto");
+          $item->addChild("status", "url incorreta");
+          $item->addChild("descricao", null);
+          $item->addChild("preco", null);
+          $item->addChild("user_id", null);
+          $item->addChild("tipo_id", null);
+      } else {
+          // obtém o registro 
+          $lista = Produto::where('nome', $nome)->get();
+
+          // se encontrou
+          if (isset($lista)) {
+            $item = $xml->addChild("produto");
+            foreach ($lista as $reg){
+            $item->addChild("descricao", $reg->descricao);
+            $item->addChild("preco", $reg->preco);                
+            $item->addChild("user_id", $reg->user->name);
+            $item->addChild("tipo_id", $reg->tipo->nome);
+            }
+          } else {
+            $item = $xml->addChild("produto");
+            $item->addChild("status", "inexistente");
+            $item->addChild("descricao", null);
+            $item->addChild("preco", null);
+            $item->addChild("user_id", null);                
+            $item->addChild("tipo_id", null);
+          }
+      }           
+      // retorna os dados no formato xml
+      echo $xml->asXML();
+  }
+
+
 }

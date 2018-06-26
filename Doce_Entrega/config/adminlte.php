@@ -112,16 +112,16 @@ return [
         'ÁREA DO GERENTE',
         [
             'text'    => 'Cadastros',
-            'icon'    => '',
+            'icon'    => 'wpforms',
             'submenu' => [
                 [
                     'text'    => 'Tipos de Produtos',
-                    'icon'    => '',
+                    'icon'    => 'list-ul',
                     'url'     => 'admin/tipos',
                 ],
                 [
                     'text' => 'Produtos',
-                    'icon'    => '',
+                    'icon'    => 'list-ul',
                     'url'  => 'admin/produtos',
                     
                 ],
@@ -147,11 +147,7 @@ return [
             'text'    => 'Listagens',
             'icon'    => '',
             'submenu' => [
-                [
-                    'text'    => 'Produtos de Fornecedores',
-                    'icon'    => '',
-                    'url'     => '#',
-                ],
+               
 
            ],
         ],

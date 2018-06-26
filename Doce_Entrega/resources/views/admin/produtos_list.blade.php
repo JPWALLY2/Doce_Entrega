@@ -3,6 +3,22 @@
 @section('title', 'Cadastro de Produtos')
 
 @section('content_header')
+        <div class="col-sm-4">
+     <form method="POST"
+           class="form-inline" 
+           action="{{ route('produtos.pesq') }}">
+       {{ csrf_field() }}
+       <input type="text" class="form-control" 
+              name="palavra"
+              placeholder="Nome do produto">
+       <input type="submit" class="btn btn-success"
+              value="Ok">       
+         
+      <a href="{{ route('produtos.index') }}" 
+         class="btn btn-warning" role="button">
+          Todos</a>      
+     </form>
+        </div>
     <h1>
     <a href="{{ route('produtos.create') }}" 
        class="btn btn-primary pull-right" role="button">Novo</a>
@@ -23,6 +39,7 @@
     <th> Nome </th>
     <th> Descrição </th>
     <th> Preço R$ </th>
+    <th> Estoque </th>
     <th> Cadastrado por: </th>
     <th> Data </th>
     <th> Foto </th>    
@@ -33,8 +50,9 @@
     <td> {{$p->tipo->nome}} </td>
     <td> {{$p->nome}} </td>
     <td> {{$p->descricao}} </td>
-    <td> {{number_format($p->preco, 2, ',', '.')}} </td>
-    <td> {{$p->user->name}} </td>
+    <td> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{number_format($p->preco, 2, ',', '.')}} </td>
+    <td> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{$p->estoque}} </td>
+    <td> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{$p->user->name}} </td>
     <td> {{date_format($p->created_at, 'd/m/Y')}} </td>
     <td>
       @if (Storage::exists($p->foto))
@@ -48,6 +66,7 @@
       @endif
     </td>  
     <td> 
+       
         <a href="{{route('produtos.edit', $p->id)}}" 
             class="btn btn-warning btn-sm" title="Alterar"
             role="button"><i class="fa fa-edit"></i></a> &nbsp;&nbsp;
@@ -63,8 +82,8 @@
                   
     </td>
   </tr>
-  @if ($loop->iteration == $loop->count)
-    <tr><td colspan=8>Nº de Produtos cadastrados : {{ $numProd}}
+  @if ($loop->iteration == $loop->count && $acao == 1)
+    <tr><td colspan=9>Nº de Produtos cadastrados : {{ $numProd}}
         </td></tr> 
   @endif
 
@@ -74,7 +93,6 @@
 @endforelse
 </table>
 
-{{ $produtos->links() }}
 
 @endsection
 

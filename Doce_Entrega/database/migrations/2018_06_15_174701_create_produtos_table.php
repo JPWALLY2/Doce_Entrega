@@ -17,6 +17,8 @@ class CreateProdutosTable extends Migration
             $table->increments('id');
             $table->string('nome');
             $table->string('descricao');
+            $table->smallInteger('estoque');
+            $table->smallInteger('estoquemin');
             $table->decimal('preco', 10, 2);
             $table->integer('user_id')->unsigned();
             $table->integer('tipo_id')->unsigned();

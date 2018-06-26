@@ -42,7 +42,7 @@
       <div class="col-sm-6">
       <div class="form-group">
         <label for="nome">Nome</label>
-        <input type="text" id="nome" name="nome" required 
+        <input type="text" id="nome" name="nome" autofocus="" required 
                value="{{$reg->nome or old('nome')}}"
                class="form-control">
       </div>

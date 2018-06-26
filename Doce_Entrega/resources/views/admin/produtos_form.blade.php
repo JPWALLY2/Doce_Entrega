@@ -75,7 +75,7 @@
     </div>
       <div class="col-sm-6">
         <div class="form-group">
-          <label for="cor">Descrição</label>
+          <label for="descricao">Descrição</label>
           <input type="text" id="descricao" name="descricao" required 
                  value="{{$reg->descricao or old('descricao')}}"
                  class="form-control">
@@ -106,6 +106,23 @@
             <input type="file" id="foto" name="foto"
                    class="form-control">
           </div>
+      </div>
+      
+     <div class="col-sm-1">
+        <div class="form-group">
+          <label for="estoque">Estoque</label>
+          <input type="number" id="estoque" name="estoque" required 
+                 value="{{$reg->estoque or old('estoque')}}"
+                 class="form-control">
+        </div>
+      </div>
+     <div class="col-sm-2">
+        <div class="form-group">
+          <label for="estoque">Estoque Minimo</label>
+          <input type="number" id="estoquemin" name="estoquemin" required 
+                 value="{{$reg->estoquemin or old('estoquemin')}}"
+                 class="form-control">
+        </div>
       </div>
 
   </div>

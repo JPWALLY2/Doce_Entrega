@@ -19,7 +19,6 @@ class CreateEnderecosTable extends Migration
             $table->string('rua');
             $table->smallInteger('num');
             $table->string('adicional');
-            $table->timestamps();
         });
     }
 
