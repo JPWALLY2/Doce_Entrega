@@ -18,6 +18,15 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('email', 191)->unique();
             $table->string('password');
+            $table->string('role')->default('admin');
+            //fornecedor telefone endereço
+            $table->smallInteger('cnpj');
+            $table->smallInteger('celular');
+            $table->integer('produto_id')->unsigned();
+            //cliente
+            $table->smallInteger('telefone');
+            $table->integer('endereco_id')->unsigned();
+            
             $table->rememberToken();
             $table->timestamps();
         });

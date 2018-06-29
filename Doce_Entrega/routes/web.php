@@ -8,6 +8,9 @@
 Route::get('/', function () {
     return view('site.principal');
 });
+Route::get('fornecedores', ['middleware'=>'guest', function(){
+    return view('fornecedores.principal');
+}]);
 
 Route::group(['prefix'=>'admin', 'namespace'=>'Admin', 'middleware' => 'auth'], function() {
 
@@ -22,8 +25,9 @@ Route::group(['prefix'=>'admin', 'namespace'=>'Admin', 'middleware' => 'auth'], 
     Route::post('gravaestoque', 'ProdutoController@gravaEstoque')
         ->name('grava.estoque');
 });
-Route::get('/produtows/{nome?}', 'Admin\ProdutoController@ws');
+Route::get('/produtows/{id}', 'Admin\ProdutoController@ws');
 Route::get('/produtowsxml/{nome?}', 'Admin\ProdutoController@wsxml');
 
 Auth::routes();
+
 

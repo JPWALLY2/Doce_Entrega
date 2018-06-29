@@ -223,6 +223,37 @@ class ProdutoController extends Controller
       // retorna os dados no formato xml
       echo $xml->asXML();
   }
+   public function ws($id = null) {
+    // indica o tipo de retorno do método
+    header("Content-type: application/json; charset=utf-8");
+
+    // verifica se $id não foi passado
+    if ($id == null) {
+      $retorno = array("descricao" => null,
+                       "preco" => null,
+                       "user_id" => null,
+                       "tipo_id" => null);  
+    } else {
+      // busca o carro cujo id foi passado por parâmetro
+      $reg = Produto::find($id);
+      
+      // verifica se encontrou o registro
+      if (isset($reg)) {
+        $retorno = array("descricao" => $reg->descricao,
+                         "preco" => $reg->preco,
+                         "user_id" => $reg->user->name,
+                         "tipo_id" => $reg->tipo->nome);  
+      } else {
+        $retorno = array("descricao" => null,
+                       "preco" => null,
+                       "user_id" => null,
+                       "tipo_id" => null);           
+      }
+    }
+
+    // converte array para o formato json
+    echo json_encode($retorno, JSON_PRETTY_PRINT);
+  }
 
 
 }
