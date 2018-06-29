@@ -56,11 +56,11 @@
     <td> {{date_format($p->created_at, 'd/m/Y')}} </td>
     <td>
       @if (Storage::exists($p->foto))
-        <img src="{{url('storage/'.$p->foto)}}"
+        <img src="{{url('public/'.$p->foto)}}"
              style="width: 80px; height: 50px" 
              alt="Foto do Produto"> 
       @else
-        <img src="{{url('storage/fotos/semfoto.jpg')}}"
+        <img src="{{url('/fotos/semfoto.jpeg')}}"
              style="width: 80px; height: 50px" 
              alt="Sem foto"> 
       @endif

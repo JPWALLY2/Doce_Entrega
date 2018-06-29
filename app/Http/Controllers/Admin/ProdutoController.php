@@ -33,6 +33,7 @@ class ProdutoController extends Controller
      */
     public function create()
     {
+
         $user = User::orderBy('name')->get();
         $tipo = Tipo::orderBy('nome')->get();
         $acao = 1;
