@@ -10,7 +10,7 @@
 <h2>Alteração de Produtos
 @endif          
 
-  <a href="{{ route('produtos.index') }}" class="btn btn-primary pull-right" role="button">Voltar</a>
+  <a href="{{ route('produtosforn.index') }}" class="btn btn-primary pull-right" role="button">Voltar</a>
 </h2>
 
 @endsection
@@ -28,10 +28,10 @@
 @endif
 
 @if ($acao==1)
-<form method="POST" action="{{ route('produtos.store') }}"
+<form method="POST" action="{{ route('produtosforn.store') }}"
       enctype="multipart/form-data">
 @else ($acao==2)
-<form method="POST" action="{{route('produtos.update', $reg->id)}}"
+<form method="POST" action="{{route('produtosforn.update', $reg->id)}}"
       enctype="multipart/form-data">
 {!! method_field('put') !!}
 @endif          
@@ -42,7 +42,7 @@
       <div class="form-group">
         <label for="tipo_id">Tipo</label>
         <select id="tipo_id" name="tipo_id" class="form-control">
-          @foreach($tipo as $t)
+          @foreach($tipoforn as $t)
             <option value="{{$t->id}}" 
                     {{((isset($reg) and $reg->tipo_id == $t->id) or 
                        old('tipo_id') == $t->id) ? "selected" : "" }}>
@@ -81,51 +81,12 @@
                  class="form-control">
         </div>
       </div>
-    
       
   </div>
+  <input type="hidden" name="us" value="2">
 
-  <div class="row">
-      <div class="col-sm-2">
-        <div class="form-group">
-        <label for="user_id">Cadastrado por</label>
-        <select id="user_id" name="user_id" class="form-control">
-          @foreach($user as $u)
-            <option value="{{$u->id}}" 
-                    {{((isset($reg) and $reg->user_id == $u->id) or 
-                       old('user_id') == $u->id) ? "selected" : "" }}>
-                    {{$u->name}}</option>
-          @endforeach
-        </select>  
-      </div>
-      </div>
     
-      <div class="col-sm-4">
-          <div class="form-group">
-            <label for="foto">Foto</label>
-            <input type="file" id="foto" name="foto"
-                   class="form-control">
-          </div>
-      </div>
-      
-     <div class="col-sm-1">
-        <div class="form-group">
-          <label for="estoque">Estoque</label>
-          <input type="number" onkeypress="return event.charCode >= 1000" min="1" id="estoque" name="estoque" required 
-                 value="{{$reg->estoque or old('estoque')}}"
-                 class="form-control">
-        </div>
-      </div>
-     <div class="col-sm-2">
-        <div class="form-group">
-          <label for="estoque">Estoque Minimo</label>
-          <input type="number" onkeypress="return event.charCode >= 100" min="1" id="estoquemin" name="estoquemin" required 
-                 value="{{$reg->estoquemin or old('estoquemin')}}"
-                 class="form-control">
-        </div>
-      </div>
 
-  </div>
 
   <input type="submit" value="Enviar" class="btn btn-success">
   <input type="reset" value="Limpar" class="btn btn-warning">

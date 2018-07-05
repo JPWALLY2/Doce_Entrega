@@ -85,7 +85,7 @@ return [
     |
     */
 
-    'dashboard_url' => 'admin',
+    'dashboard_url' => 'admin/inicio',
 
     'logout_url' => 'logout',
 
@@ -137,20 +137,40 @@ return [
                     'text' => 'Produtos por Tipo',
                     'url'  => 'admin/produtosgraf',
                 ],
-//                [
-//                    'text'    => 'Marcas por Quantidade',
-//                    'url'     => '#',
-//                ],
             ],
         ],
         [
             'text'    => 'Listagens',
             'icon'    => '',
             'submenu' => [
-               
-
+                [
+                    'icon' => '',
+                    'text' => 'Produtos de Fornecedores',
+                    'url'  => 'admin/produtosfornecedores',
+                ],
+            
            ],
         ],
+        'ÁREA DO FORNECEDOR',
+        [
+            'text'    => 'Cadastros',
+            'icon'    => 'wpforms',
+            'submenu' => [
+                [
+                    'text'    => 'Tipos de Produtos',
+                    'icon'    => 'list-ul',
+                    'url'     => '#',
+                ],
+                [
+                    'text' => 'Produtos',
+                    'icon'    => 'list-ul',
+                    'url'  => '#',
+                    
+                ],
+               
+            ],
+        ],
+        
 
     ],
     /*

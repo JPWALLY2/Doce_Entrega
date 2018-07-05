@@ -16,6 +16,7 @@ class CreateTiposTable extends Migration
         Schema::create('tipos', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nome');
+            $table->smallInteger('usa')->default();
             $table->timestamps();
         });
     }

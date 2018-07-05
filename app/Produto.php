@@ -14,7 +14,7 @@ class Produto extends Model
     }
     
     protected $fillable = ['nome', 'descricao',
-        'preco', 'user_id', 'foto', 'tipo_id', 'estoque', 'estoquemin'];
+        'preco', 'user_id', 'foto', 'tipo_id', 'estoque', 'estoquemin', 'usa'];
     
     public function setPrecoAttribute($value) {
         $novo1 = str_replace('.', '', $value);    // retira o ponto

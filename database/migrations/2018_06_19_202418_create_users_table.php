@@ -20,12 +20,12 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('role')->default('admin');
             //fornecedor telefone endereço
-            $table->smallInteger('cnpj');
-            $table->smallInteger('celular');
-            $table->integer('produto_id')->unsigned();
+            $table->smallInteger('cnpj')->nullable();
+            $table->smallInteger('celular')->nullable();
+            $table->integer('produto_id')->unsigned()->nullable();
             //cliente
-            $table->smallInteger('telefone');
-            $table->integer('endereco_id')->unsigned();
+            $table->smallInteger('telefone')->nullable();
+            $table->integer('endereco_id')->unsigned()->nullable();
             
             $table->rememberToken();
             $table->timestamps();

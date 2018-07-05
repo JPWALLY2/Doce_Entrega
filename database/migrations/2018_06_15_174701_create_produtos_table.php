@@ -17,12 +17,13 @@ class CreateProdutosTable extends Migration
             $table->increments('id');
             $table->string('nome');
             $table->string('descricao');
-            $table->smallInteger('estoque');
-            $table->smallInteger('estoquemin');
+            $table->smallInteger('estoque')->nullable();
+            $table->smallInteger('estoquemin')->nullable();
             $table->decimal('preco', 10, 2);
-            $table->integer('user_id')->unsigned();
+            $table->integer('user_id')->unsigned()->nullable();
             $table->integer('tipo_id')->unsigned();
             $table->string('foto', 60)->nullable();
+            $table->smallInteger('us')->default();
             $table->timestamps();
             
         });

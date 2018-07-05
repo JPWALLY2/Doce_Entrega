@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Tipo;
+use App\Produto;
 
-class TipoController extends Controller
+class ProdFornecedorController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +15,13 @@ class TipoController extends Controller
      */
     public function index()
     {
-       $tipos = Tipo::where('usa', 1)->get();
-        $numTipo = Tipo::count('id');
-        return view('fornecedor.tipos_list', compact('tipos', 'numTipo')); 
+        $produtos = Produto::where('us', 2)
+                ->get();
+        $numProd = Produto::where('us', 2)
+                ->count('id');
+        $acao = 1; 
+        return view('admin.produtosfornecedores_list',
+                compact('produtos', 'numProd', 'acao'));
     }
 
     /**
@@ -27,7 +31,7 @@ class TipoController extends Controller
      */
     public function create()
     {
-        return view('fornecedor.tipos_form',['acao' => 1]);
+        //
     }
 
     /**
@@ -38,21 +42,7 @@ class TipoController extends Controller
      */
     public function store(Request $request)
     {
-            
-       $this->validate($request, [
-            'nome' => 'required|unique:tipos|min:2|max:10',
-            
-        ]);
-       
-       $req = $request->all();
-
-        $tip = Tipo::create($req);
-
-        if ($tip) {
-            return redirect()->route('tipos.index')
-                ->with('status' , $request->nome . ' inserida com sucesso!!');
-        }
-    
+        //
     }
 
     /**
@@ -74,8 +64,7 @@ class TipoController extends Controller
      */
     public function edit($id)
     {
-        $ed = Tipo::find($id);
-        return view('fornecedor.tipos_form', ['reg' => $ed, 'acao' => 3]);
+        //
     }
 
     /**
@@ -87,17 +76,7 @@ class TipoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $reg = Tipo::find($id);
-
-        $dados = $request->all();
-
-        $tip = $reg->update($dados);
-
-        // se alterou
-        if ($tip) {
-            return redirect()->route('tipos.index')
-                ->with('status', $request->nome . ' alterada com sucesso!!');
-        }
+        //
     }
 
     /**
@@ -108,11 +87,25 @@ class TipoController extends Controller
      */
     public function destroy($id)
     {
-        $reg = Tipo::find($id);
+        $reg = Produto::find($id);
 
         if ($reg->delete()) {
-            return redirect()->route('tipos.index')
+            return redirect()->route('produtos.index')
                 ->with('status', $reg->nome . ' excluída corretamente!!');
         }
     }
+    public function pesq(Request $request)
+    {
+         $acao = 2;
+         $dados = Produto::where('us', 2)->join('tipos', 'tipos.id', 'produtos.tipo_id')
+                           ->where('produtos.nome', 'like','%'.$request->palavra.'%')
+                           ->orwhere('tipos.nome', 'like','%'.$request->palavra.'%')
+                           ->select('produtos.*')
+                           ->get();
+        
+       return view('admin.produtosfornecedores_list', compact('acao'), ['produtos' => $dados,
+                         'palavra' => $request->palavra]);
+  
+    }
+    
 }

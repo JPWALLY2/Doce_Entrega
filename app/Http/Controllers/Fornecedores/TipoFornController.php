@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Fornecedores;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Tipo;
 
-class TipoController extends Controller
+class TipoFornController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +15,9 @@ class TipoController extends Controller
      */
     public function index()
     {
-       $tipos = Tipo::where('usa', 1)->get();
-        $numTipo = Tipo::count('id');
-        return view('fornecedor.tipos_list', compact('tipos', 'numTipo')); 
+        $tipos = Tipo::where('usa', 2)->get();
+        $numTipoforn = Tipo::count('id');
+        return view('fornecedor.tipos_list', compact('tipos', 'numTipoforn')); 
     }
 
     /**
@@ -38,9 +38,9 @@ class TipoController extends Controller
      */
     public function store(Request $request)
     {
-            
-       $this->validate($request, [
+        $this->validate($request, [
             'nome' => 'required|unique:tipos|min:2|max:10',
+            
             
         ]);
        
@@ -52,6 +52,7 @@ class TipoController extends Controller
             return redirect()->route('tipos.index')
                 ->with('status' , $request->nome . ' inserida com sucesso!!');
         }
+    
     
     }
 
@@ -75,8 +76,8 @@ class TipoController extends Controller
     public function edit($id)
     {
         $ed = Tipo::find($id);
-        return view('fornecedor.tipos_form', ['reg' => $ed, 'acao' => 3]);
-    }
+        return view('admin.tipos_form', ['reg' => $ed, 'acao' => 3]);
+     }
 
     /**
      * Update the specified resource in storage.
@@ -87,17 +88,19 @@ class TipoController extends Controller
      */
     public function update(Request $request, $id)
     {
+        
         $reg = Tipo::find($id);
-
-        $dados = $request->all();
-
-        $tip = $reg->update($dados);
-
-        // se alterou
-        if ($tip) {
-            return redirect()->route('tipos.index')
-                ->with('status', $request->nome . ' alterada com sucesso!!');
-        }
+        
+                $dados = $request->all();
+        
+                $tip = $reg->update($dados);
+        
+                // se alterou
+                if ($tip) {
+                    return redirect()->route('tipos.index')
+                        ->with('status', $request->nome . ' alterada com sucesso!!');
+                }
+            
     }
 
     /**
@@ -108,11 +111,13 @@ class TipoController extends Controller
      */
     public function destroy($id)
     {
+       
         $reg = Tipo::find($id);
-
-        if ($reg->delete()) {
-            return redirect()->route('tipos.index')
-                ->with('status', $reg->nome . ' excluída corretamente!!');
-        }
+        
+                if ($reg->delete()) {
+                    return redirect()->route('tipos.index')
+                        ->with('status', $reg->nome . ' excluída corretamente!!');
+                }
+            
     }
 }

@@ -28,6 +28,6 @@
 <h2 align="center"><font size="10" face="French Script MT" color="blue">Todos produtos abastecidos!</font></h2>
 @endforelse
 </table>
-/////////////////
+
 
 @endsection

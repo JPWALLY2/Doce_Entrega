@@ -20,8 +20,8 @@ class ProdutoController extends Controller
     public function index()
     {
 
-        $produtos = Produto::paginate(7);
-        $numProd = Produto::count('id');
+        $produtos = Produto::where('us', 1)->get();
+        $numProd = Produto::where('us', 1)->count('id');
         $acao = 1; 
         return view('admin.produtos_list', compact('produtos', 'numProd', 'acao'));
     }
@@ -172,7 +172,7 @@ class ProdutoController extends Controller
      public function pesq(Request $request) {
          
          $acao = 2;
-         $dados = Produto::join('tipos', 'tipos.id', 'produtos.tipo_id')
+         $dados = Produto::where('us', 1)->join('tipos', 'tipos.id', 'produtos.tipo_id')
                             ->where('produtos.nome', 'like','%'.$request->palavra.'%')
                             ->orwhere('tipos.nome', 'like','%'.$request->palavra.'%')
                             ->select('produtos.*')
@@ -183,77 +183,7 @@ class ProdutoController extends Controller
   
     }
     
-    public function wsxml($nome = null) {
-      // indica o tipo de retorno do método
-      header("Content-type: application/xml");
-
-      // inicializa a biblioteca SimpleXML
-      $xml = new \SimpleXMLElement('<?xml version="1.0" encoding="utf-8"?><produtos></produtos>');
-
-      // se não foi passado $nome
-      if ($nome == null) {
-          $item = $xml->addChild("produto");
-          $item->addChild("status", "url incorreta");
-          $item->addChild("descricao", null);
-          $item->addChild("preco", null);
-          $item->addChild("user_id", null);
-          $item->addChild("tipo_id", null);
-      } else {
-          // obtém o registro 
-          $lista = Produto::where('nome', $nome)->get();
-
-          // se encontrou
-          if (isset($lista)) {
-            $item = $xml->addChild("produto");
-            foreach ($lista as $reg){
-            $item->addChild("descricao", $reg->descricao);
-            $item->addChild("preco", $reg->preco);                
-            $item->addChild("user_id", $reg->user->name);
-            $item->addChild("tipo_id", $reg->tipo->nome);
-            }
-          } else {
-            $item = $xml->addChild("produto");
-            $item->addChild("status", "inexistente");
-            $item->addChild("descricao", null);
-            $item->addChild("preco", null);
-            $item->addChild("user_id", null);                
-            $item->addChild("tipo_id", null);
-          }
-      }           
-      // retorna os dados no formato xml
-      echo $xml->asXML();
-  }
-   public function ws($id = null) {
-    // indica o tipo de retorno do método
-    header("Content-type: application/json; charset=utf-8");
-
-    // verifica se $id não foi passado
-    if ($id == null) {
-      $retorno = array("descricao" => null,
-                       "preco" => null,
-                       "user_id" => null,
-                       "tipo_id" => null);  
-    } else {
-      // busca o carro cujo id foi passado por parâmetro
-      $reg = Produto::find($id);
-      
-      // verifica se encontrou o registro
-      if (isset($reg)) {
-        $retorno = array("descricao" => $reg->descricao,
-                         "preco" => $reg->preco,
-                         "user_id" => $reg->user->name,
-                         "tipo_id" => $reg->tipo->nome);  
-      } else {
-        $retorno = array("descricao" => null,
-                       "preco" => null,
-                       "user_id" => null,
-                       "tipo_id" => null);           
-      }
-    }
-
-    // converte array para o formato json
-    echo json_encode($retorno, JSON_PRETTY_PRINT);
-  }
+  
 
 
 }
